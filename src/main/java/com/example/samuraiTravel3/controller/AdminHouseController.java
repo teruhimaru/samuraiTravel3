@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.samuraiTravel3.entity.House;
+import com.example.samuraiTravel3.form.HouseEditForm;
 import com.example.samuraiTravel3.form.HouseRegisterForm;
 import com.example.samuraiTravel3.repository.HouseRepository;
 import com.example.samuraiTravel3.service.HouseService;
@@ -87,4 +88,37 @@ public class AdminHouseController {
 		return "redirect:/admin/houses";
 		
 	}
+	
+	@GetMapping("/{id}/edit")
+	public String edit(@PathVariable(name = "id") Integer id,
+			Model model
+			) {
+		House house = houseRepository.getReferenceById(id);
+		String imageName = house.getImageName();
+		HouseEditForm houseEditForm = new HouseEditForm(house.getId(), house.getName(),
+				null, house.getDescription(), house.getPrice(), house.getCapacity(),
+				house.getPostalCode(), house.getAddress(), house.getPhoneNumber()
+				);
+		
+		model.addAttribute("houseEditForm", houseEditForm);
+		model.addAttribute("imageName", imageName);
+		
+		return "admin/houses/edit";
+	}
+	
+	@PostMapping("/{id}/update")
+	public String update(@ModelAttribute @Validated HouseEditForm houseEditForm,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes
+			) {
+		if (bindingResult.hasErrors()) {
+			return "admin/houses/edit";
+		}
+		
+		houseService.update(houseEditForm);
+		redirectAttributes.addFlashAttribute("successMessage", "民宿情報を更新しました。");
+		return "redirect:/admin/houses";
+	}
+		
 }
+

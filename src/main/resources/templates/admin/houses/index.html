@@ -24,6 +24,10 @@
                                 </form>
                                 <a th:href="@{/admin/houses/register}" class="btn text-white shadow-sm mb-3 moattravel-btn">登録</a>
                             </div>
+
+                            <div th:if="${successMessage}" class="alert alert-info">
+                                <sapn th:text="${successMessage}"></sapn>
+                            </div>
     
                             <table class="table">
                                 <thead>
