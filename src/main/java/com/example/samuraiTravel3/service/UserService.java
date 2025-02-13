@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.samuraiTravel3.entity.Role;
 import com.example.samuraiTravel3.entity.User;
 import com.example.samuraiTravel3.form.SignupForm;
+import com.example.samuraiTravel3.form.UserEditForm;
 import com.example.samuraiTravel3.repository.RoleRepository;
 import com.example.samuraiTravel3.repository.UserRepository;
 
@@ -42,9 +43,21 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
-	public Boolean isEmailRegistered(SignupForm signupForm) {
-		Boolean exist = userRepository.findByEmail(signupForm.getEmail()) != null;
-		return exist;
+	@Transactional
+	public void update(UserEditForm userEditForm) {
+		User user = userRepository.getReferenceById(userEditForm.getId());
+		user.setName(userEditForm.getName());
+		user.setFurigana(userEditForm.getFurigana());
+		user.setPostalCode(userEditForm.getPostalCode());
+		user.setAddress(userEditForm.getAddress());
+		user.setPhoneNumber(userEditForm.getPhoneNumber());
+		user.setEmail(userEditForm.getEmail());
+		userRepository.save(user);
+	}
+	
+	public Boolean isEmailRegistered(String email) {
+		User user = userRepository.findByEmail(email);
+		return user != null;
 		
 	}
 	
@@ -66,5 +79,10 @@ public class UserService {
 	public void enableUser(User user) {
 		user.setEnabled(true);
 		userRepository.save(user);
+	}
+	
+	public boolean isEmailChanged(UserEditForm userEditForm) {
+		User currentUser = userRepository.getReferenceById(userEditForm.getId());
+		return !userEditForm.getEmail().equals(currentUser.getEmail());
 	}
 }

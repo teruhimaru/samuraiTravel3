@@ -52,7 +52,7 @@ public class AuthController {
 			RedirectAttributes redirectAttributes,
 			HttpServletRequest httpServletRequest
 			) {
-		if (userService.isEmailRegistered(signupForm)) {
+		if (userService.isEmailRegistered(signupForm.getEmail())) {
 			FieldError fieldError = new FieldError(bindingResult.getObjectName(),
 					"email", "既に登録済みのメールアドレスです。");
 			bindingResult.addError(fieldError);
