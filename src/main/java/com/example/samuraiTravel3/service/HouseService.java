@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.samuraiTravel3.entity.House;
@@ -21,7 +22,7 @@ public class HouseService {
 	public HouseService(HouseRepository houseRepository) {
 		this.houseRepository = houseRepository;
 	}
-	
+	@Transactional
 	public void create(HouseRegisterForm houseRegisterForm) {
 		House house = new House();
 		MultipartFile imageFile = houseRegisterForm.getImageFile();
@@ -45,6 +46,7 @@ public class HouseService {
 		houseRepository.save(house);
 	}
 	
+	@Transactional
 	public void update(HouseEditForm houseEditForm) {
 		House house = houseRepository.getReferenceById(houseEditForm.getId());
 		MultipartFile imageFile = houseEditForm.getImageFile();
