@@ -1,8 +1,10 @@
 package com.example.samuraiTravel3.form;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ReservationRegisterForm {
 	private Integer houseId;
 	private Integer userId;
