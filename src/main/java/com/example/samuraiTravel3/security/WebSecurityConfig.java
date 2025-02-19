@@ -17,7 +17,7 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests((requests) -> requests
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/signup/**", "/houses", "/houses/{id}").permitAll()
+						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/signup/**", "/houses", "/houses/{id}", "/stripe/webhook").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin((login) -> login
@@ -28,7 +28,8 @@ public class WebSecurityConfig {
 						.permitAll())
 				.logout((logout) -> logout
 						.logoutSuccessUrl("/?loggedOut")
-						.permitAll());
+						.permitAll())
+				.csrf((csrf) -> csrf.ignoringRequestMatchers("/stripe/webhook"));
 		return http.build();
 
 	}
